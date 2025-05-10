@@ -1,23 +1,43 @@
-export default function MeetingsList({ meetings = [], onRegister, onDelete }) {
+import MeetingItem from './MeetingItem';
+
+export default function MeetingsList({
+                                         meetings,
+                                         registrations,
+                                         onRegister,
+                                         onUnregister,
+                                         onDelete
+                                     }) {
     return (
         <div>
-            {meetings.map((meeting, index) => (
-                <div key={index} className="meeting">
-                    <h3>{meeting.title}</h3>
-                    <p>{meeting.description}</p>
-                    <p>
-                        <strong>Uczestnicy:</strong>{" "}
-                        {Array.isArray(meeting.attendees) && meeting.attendees.length > 0
-                            ? meeting.attendees.join(", ")
-                            : ""}
-                    </p>
-                    <button onClick={() => onRegister(index)}>Zapisz się</button>
-                    <button onClick={() => onDelete(index)}>Usuń spotkanie</button>
-                </div>
-            ))}
+            {meetings.length > 0 && (
+                <table className="table" style={{ marginLeft: 0 }}>
+                    <thead>
+                    <tr>
+                        <th>Nazwa</th>
+                        <th>Opis</th>
+                        <th>Akcje</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {meetings.map((meeting, index) => (
+                        <MeetingItem
+                            key={index}
+                            meeting={meeting}
+                            isRegistered={registrations.includes(meeting.title)}
+                            onRegister={onRegister}
+                            onUnregister={onUnregister}
+                            onDelete={onDelete}
+                        />
+                    ))}
+                    </tbody>
+                </table>
+            )}
         </div>
     );
 }
+
+
+
 
 
 
