@@ -1,25 +1,34 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from 'react';
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    const [email, setEmail] = useState('natalia.grzywna@agh.edu.pl');
+    const [savedEmail, setSavedEmail] = useState('');
+
+    function handleChange(event) {
+        setEmail(event.target.value);
+        console.log(event.target.value);
+    }
+
+    function handleSave() {
+        setSavedEmail(email);
+        console.log('Zapisano e-mail:', email);
+    }
+
+    return (
+        <div>
+            <h1>System do zapisów na zajęcia</h1>
+
+            <input
+                type="text"
+                value={email}
+                onChange={handleChange}
+                placeholder="Podaj swój email"
+            />
+            <button onClick={handleSave}>Zapisz</button>
+
+            <h2>Twój zapisany e-mail to: {savedEmail}</h2>
+        </div>
+    );
 }
 
 export default App;
