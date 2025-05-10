@@ -1,20 +1,25 @@
-export default function MeetingsList({meetings}) {
+export default function MeetingsList({ meetings = [], onRegister, onDelete }) {
     return (
-        <table>
-            <thead>
-            <tr>
-                <th>Nazwa spotkania</th>
-                <th>Opis</th>
-            </tr>
-            </thead>
-            <tbody>
-            {
-                meetings.map((meeting, index) => <tr key={index}>
-                    <td>{meeting.title}</td>
-                    <td>{meeting.description}</td>
-                </tr>)
-            }
-            </tbody>
-        </table>
+        <div>
+            {meetings.map((meeting, index) => (
+                <div key={index} className="meeting">
+                    <h3>{meeting.title}</h3>
+                    <p>{meeting.description}</p>
+                    <p>
+                        <strong>Uczestnicy:</strong>{" "}
+                        {Array.isArray(meeting.attendees) && meeting.attendees.length > 0
+                            ? meeting.attendees.join(", ")
+                            : ""}
+                    </p>
+                    <button onClick={() => onRegister(index)}>Zapisz się</button>
+                    <button onClick={() => onDelete(index)}>Usuń spotkanie</button>
+                </div>
+            ))}
+        </div>
     );
 }
+
+
+
+
+

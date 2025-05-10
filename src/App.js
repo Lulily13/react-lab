@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import 'milligram';
 
 import './App.css';
@@ -16,6 +16,10 @@ function App() {
     function logout() {
         setLoggedIn(null);
     }
+
+    useEffect(() => {
+        document.title = "Bookify";
+    }, []);
 
     return (
         <div className="app-container">
