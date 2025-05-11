@@ -8,7 +8,10 @@ import MeetingsPage from './meetings/MeetingsPage';
 import { Helmet } from "react-helmet";
 
 function App() {
-    const [loggedIn, setLoggedIn] = useState(null);
+    const [loggedIn, setLoggedIn] = useState(() => {
+        const savedUser = localStorage.getItem('loggedIn');
+        return savedUser || null;
+    });
 
     const [meetings, setMeetings] = useState(() => {
         const saved = localStorage.getItem('meetings');
@@ -20,20 +23,22 @@ function App() {
         return saved ? JSON.parse(saved) : {};
     });
 
+    // Zapisz meetings do localStorage
     useEffect(() => {
         localStorage.setItem('meetings', JSON.stringify(meetings));
     }, [meetings]);
 
+    // Zapisz registrations do localStorage
     useEffect(() => {
         localStorage.setItem('registrations', JSON.stringify(registrations));
     }, [registrations]);
 
+    // Zapisz zalogowanego użytkownika
     useEffect(() => {
         if (loggedIn) {
-            const saved = localStorage.getItem('registrations');
-            if (saved) {
-                setRegistrations(JSON.parse(saved));
-            }
+            localStorage.setItem('loggedIn', loggedIn);
+        } else {
+            localStorage.removeItem('loggedIn');
         }
     }, [loggedIn]);
 
@@ -106,4 +111,5 @@ function App() {
 }
 
 export default App;
+
 
