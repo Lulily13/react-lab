@@ -19,6 +19,10 @@ function App() {
     });
 
     useEffect(() => {
+        document.title = "Bookify";
+    }, []);
+
+    useEffect(() => {
         localStorage.setItem('meetings', JSON.stringify(meetings));
     }, [meetings]);
 
