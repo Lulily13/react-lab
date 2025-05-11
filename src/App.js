@@ -1,14 +1,15 @@
-import {useEffect, useState} from 'react';
+import { useEffect, useState } from 'react';
 import 'milligram';
 
 import './App.css';
 import LoginForm from './LoginForm';
 import UserPanel from './UserPanel';
 import MeetingsPage from './meetings/MeetingsPage';
-import {Helmet} from "react-helmet";
+import { Helmet } from "react-helmet";
 
 function App() {
     const [loggedIn, setLoggedIn] = useState(null);
+
     const [meetings, setMeetings] = useState(() => {
         const saved = localStorage.getItem('meetings');
         return saved ? JSON.parse(saved) : [];
@@ -19,7 +20,6 @@ function App() {
         return saved ? JSON.parse(saved) : {};
     });
 
-
     useEffect(() => {
         localStorage.setItem('meetings', JSON.stringify(meetings));
     }, [meetings]);
@@ -27,6 +27,15 @@ function App() {
     useEffect(() => {
         localStorage.setItem('registrations', JSON.stringify(registrations));
     }, [registrations]);
+
+    useEffect(() => {
+        if (loggedIn) {
+            const saved = localStorage.getItem('registrations');
+            if (saved) {
+                setRegistrations(JSON.parse(saved));
+            }
+        }
+    }, [loggedIn]);
 
     function login(email) {
         setLoggedIn(email);
@@ -43,7 +52,7 @@ function App() {
     function handleDeleteMeeting(meeting) {
         setMeetings(prev => prev.filter(m => m.title !== meeting.title));
         setRegistrations(prev => {
-            const updated = {...prev};
+            const updated = { ...prev };
             for (const user in updated) {
                 updated[user] = updated[user].filter(title => title !== meeting.title);
             }
@@ -55,7 +64,7 @@ function App() {
         setRegistrations(prev => {
             const userRegs = prev[loggedIn] || [];
             if (!userRegs.includes(meeting.title)) {
-                return {...prev, [loggedIn]: [...userRegs, meeting.title]};
+                return { ...prev, [loggedIn]: [...userRegs, meeting.title] };
             }
             return prev;
         });
@@ -64,7 +73,7 @@ function App() {
     function handleUnregister(meeting) {
         setRegistrations(prev => {
             const userRegs = prev[loggedIn] || [];
-            return {...prev, [loggedIn]: userRegs.filter(title => title !== meeting.title)};
+            return { ...prev, [loggedIn]: userRegs.filter(title => title !== meeting.title) };
         });
     }
 
@@ -77,7 +86,7 @@ function App() {
                 <h1 className="app-title">System do zapisów na zajęcia</h1>
                 {loggedIn ? (
                     <>
-                        <UserPanel email={loggedIn} onLogout={logout}/>
+                        <UserPanel email={loggedIn} onLogout={logout} />
                         <MeetingsPage
                             email={loggedIn}
                             meetings={meetings}
@@ -89,7 +98,7 @@ function App() {
                         />
                     </>
                 ) : (
-                    <LoginForm onLogin={login}/>
+                    <LoginForm onLogin={login} />
                 )}
             </div>
         </>
