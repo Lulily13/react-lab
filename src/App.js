@@ -7,7 +7,6 @@ import UserPanel from './UserPanel';
 import MeetingsPage from './meetings/MeetingsPage';
 
 function App() {
-    document.title = "Bookify";
     const [loggedIn, setLoggedIn] = useState(null);
     const [meetings, setMeetings] = useState(() => {
         const saved = localStorage.getItem('meetings');
